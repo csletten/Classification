@@ -11,17 +11,13 @@ D = 4;
 % Imported data
 x = zeros(D, 90);
 
-table1 = readtable('class_1.txt');
-data1 = table1{:, :};
+data1 = load('class_1.txt', '-ascii');
 x(:, 1:30) = data1(1:30,:)'; 
-% Load + ascii
 
-table2 = readtable('class_2.txt');
-data2 = table2{:, :};
+data2 = load('class_2.txt', '-ascii');
 x(:, 31:60) = data2(1:30,:)'; 
 
-table3 = readtable('class_3.txt');
-data3 = table3{:, :};
+data3 = load('class_3.txt', '-ascii');
 x(:, 61:90) = data3(1:30,:)'; 
 
 global t
@@ -41,7 +37,6 @@ end
 
 W0 = randn(C, D);
 b0 = randn(C, 1);
-
 W = [W0 b0];
 
 while true

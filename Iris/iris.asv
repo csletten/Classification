@@ -1,5 +1,6 @@
 % Steepest descent variables
 iterations = 100;
+alpha = 0.01;
 alpha = 0.1;
 
 labels = ["Setosa" "Versicolor" "Virginica"];
@@ -15,6 +16,7 @@ x = zeros(D, 90);
 table1 = readtable('class_1.txt');
 data1 = table1{:, :};
 x(:, 1:30) = data1(1:30,:)'; 
+% Load + ascii
 
 table2 = readtable('class_2.txt');
 data2 = table2{:, :};
@@ -43,30 +45,36 @@ W0 = randn(C, D);
 b0 = randn(C, 1);
 
 W = [W0 b0];
+% MSE grad
 
-for i = 1:iterations
-    direction = 0;
-    
-    W_grad = gradient(x, W, b);
-    W = W - alpha*W_grad;
+while true
+    for i = 1:iterations
+        W_grad = gradient(x, W);
+        W = W - alpha*W_grad;
+    end
+    if (norm(W_grad*alpha) < alpha)
+        break
+    end
 end
 
-test_x = [6.7 3.0 5.2 2.3]';
+
+
+test_x = [5.7 2.5 5.0 2.0 1]';
 disp(W*test_x);
 
 
-function y = linearClassifier(x, W, b)
+function y = linearClassifier(x, W)
     sigm = @(z) 1./(1+exp(-z));
-    y = sigm(W*[x]);
+    y = sigm(W*[x' 1]');
 end
 
-function [W_grad, g] = gradient(x, W, b)
+function [W_grad, g] = gradient(x, W)
     global N
     global t
     W_grad = 0;
     for k = 1:N
-        g = linearClassifier(x(:, k), W, b);
-        W_grad = W_grad + ((g-t(:, k)).*g.*(1-g))*x(:, k)';
+        g = linearClassifier(x(:, k), W);
+        W_grad = W_grad + ((g-t(:, k)).*g.*(1-g))*[x(:, k)' 1];
     end
 end
 

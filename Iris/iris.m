@@ -16,9 +16,9 @@ N_test = length(test_range)*3;
 %% Training
 training_data = zeros(D, N_training);
 
-data1 = load('class_1.txt', '-ascii');
-data2 = load('class_2.txt', '-ascii');
-data3 = load('class_3.txt', '-ascii');
+data1 = load('irisData/class_1.txt', '-ascii');
+data2 = load('irisData/class_2.txt', '-ascii');
+data3 = load('irisData/class_3.txt', '-ascii');
 
 for i=1:length(features)
     feature = features(i);

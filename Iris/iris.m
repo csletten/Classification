@@ -2,6 +2,7 @@ close all
 %% Constants
 alpha = 0.01;
 tol = 0.07;
+max_iterations = 100000;
 
 classes = ["Setosa" "Versicolor" "Virginica"];
 C = length(classes);
@@ -36,12 +37,14 @@ W0 = rand(C, D);
 b0 = rand(C, 1);
 W = [W0 b0];
  
- 
+iterations = 0;
+
 while true
    grad_MSE = gradient(training_data, W, training_solution, N_training, C, D);
    W = W - alpha*grad_MSE;
+   iterations = iterations + 1;
     
-   if (norm(grad_MSE) < tol) 
+   if (norm(grad_MSE) < tol || iterations >= max_iterations) 
        break
    end
 end

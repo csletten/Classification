@@ -40,7 +40,7 @@ W = [W0 w0];
 
 iterations = 0;
 
-% Calculate new gradient until the norm of the gradient is below the tolerance level
+% Calculate new gradient until the gradient of the error is below the tolerance level
 while true
     grad_MSE = gradient(training_data, W, training_targets, N_training, C, D);
     W = W - alpha*grad_MSE;

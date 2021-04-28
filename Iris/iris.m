@@ -25,30 +25,30 @@ data3 = load('irisData/class_3.txt', '-ascii');
 for i=1:length(features)
     feature = features(i);
     
-    training_data(i, 1:30) = data1(training_range,feature)';  
-    training_data(i, 31:60) = data2(training_range,feature)'; 
+    training_data(i, 1:30) = data1(training_range,feature)';
+    training_data(i, 31:60) = data2(training_range,feature)';
     training_data(i, 61:90) = data3(training_range,feature)';
     
 end
 
 training_targets = generate_targets(C, N_training);
- 
-% Initialise W matrix 
+
+% Initialise W matrix
 W0 = rand(C, D);
 w0 = rand(C, 1);
 W = [W0 w0];
- 
+
 iterations = 0;
 
 % Calculate new gradient until the norm of the gradient is below the tolerance level
 while true
-   grad_MSE = gradient(training_data, W, training_targets, N_training, C, D);
-   W = W - alpha*grad_MSE;
-   iterations = iterations + 1;
+    grad_MSE = gradient(training_data, W, training_targets, N_training, C, D);
+    W = W - alpha*grad_MSE;
+    iterations = iterations + 1;
     
-   if (norm(grad_MSE) < tol || iterations >= max_iterations) 
-       break
-   end
+    if (norm(grad_MSE) < tol || iterations >= max_iterations)
+        break
+    end
 end
 
 
@@ -65,9 +65,9 @@ for i=1:N_training
     
     if not(isequal(training_results(:, i), training_targets(:, i)))
         training_errors = training_errors + 1;
-    end   
+    end
 end
- 
+
 %% Testing
 
 % Load test data
@@ -75,12 +75,12 @@ test_data = ones(D, N_test);
 for i=1:length(features)
     feature = features(i);
     
-    test_data(i, 1:20) = data1(test_range,feature)'; 
-    test_data(i, 21:40) = data2(test_range,feature)'; 
+    test_data(i, 1:20) = data1(test_range,feature)';
+    test_data(i, 21:40) = data2(test_range,feature)';
     test_data(i, 41:60) = data3(test_range,feature)';
     
 end
- 
+
 test_targets = generate_targets(C, N_test);
 
 test_results = ones(C, N_test);
@@ -122,37 +122,37 @@ end
 
 % Calculates the discriminant
 function y = discriminant(x, W)
-    y = sigm(W*[x' 1]');
+y = sigm(W*[x' 1]');
 end
 
 % Calculate new gradient
 function [grad_MSE, g] = gradient(x, W, t, N, C, D)
-    grad_MSE = zeros(C, D + 1);
-    for k = 1:N
-        g = discriminant(x(:, k), W);
-        grad_MSE = grad_MSE + ((g-t(:, k)).*g.*(1-g))*[x(:, k)' 1];
-    end
+grad_MSE = zeros(C, D + 1);
+for k = 1:N
+    g = discriminant(x(:, k), W);
+    grad_MSE = grad_MSE + ((g-t(:, k)).*g.*(1-g))*[x(:, k)' 1];
+end
 end
 
 % Generate targets
 function t = generate_targets(C, target_count)
-    t = zeros(C, target_count);
-    for i=1:target_count
-        if (i <= target_count/3)
-            t(:, i) = [1 0 0]';
-        elseif (i <= 2*target_count/3)
-            t(:, i) = [0 1 0]';
-        else 
-            t(:, i) = [0 0 1]';
-        end
-    
+t = zeros(C, target_count);
+for i=1:target_count
+    if (i <= target_count/3)
+        t(:, i) = [1 0 0]';
+    elseif (i <= 2*target_count/3)
+        t(:, i) = [0 1 0]';
+    else
+        t(:, i) = [0 0 1]';
     end
+    
+end
 end
 
 % Sigmoid
 function g = sigm(z)
-    g = [0 0 0]';
-    for i=1:size(z)
-        g(i) = 1/(1+expm(-z(i)));
-    end
+g = [0 0 0]';
+for i=1:size(z)
+    g(i) = 1/(1+expm(-z(i)));
+end
 end

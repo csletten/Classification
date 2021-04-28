@@ -43,7 +43,7 @@ for j=1:num_test
         
         test_results(j) = max_indices(min_dist_class) - 1;
     else
-        test_results(j) = max_indices(1) - 1;    
+        test_results(j) = max_indices(1) - 1;
     end
     
     if not(isequal(test_results(j), testlab(j)))
